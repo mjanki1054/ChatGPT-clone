@@ -50,12 +50,12 @@
 .side-menu{
   width: 260px;
   padding: 10px;
-  background-color: #202123;
+  background-color: #282c34;
 }
 
 .chatbox{
   flex: 1;
-  background-color: #343541;
+  background-color: #ffffff;
   position: relative;
 }
 
@@ -69,6 +69,7 @@ display: flex;
 flex-direction: column;
 padding: 0px;
 overflow: hidden;
+font-size: 1.02em;
 }
 
 /* content can be scroll above the textarea boxes and below the textarea boxes */
@@ -120,6 +121,7 @@ overflow: hidden;
 .chat-message.question .chat-message-center {
   display: flex;
   flex-direction: row;
+  background-color: #ffffff;
 }
 
 
@@ -135,7 +137,7 @@ padding-right: 24px;
 
 }
 .message-r{
-  background-color: #343541;
+  background-color: #f7f7f8;
 }
 
 .chat-message-center .avatar {
@@ -153,12 +155,13 @@ padding-right: 24px;
   align-items:center;
   justify-content:left;
   width: calc(100% - 56px);
-  background-color:#40414f;
+  background-color:#f7f7f8;
+  color: rgba(81 8 66 0);
 }
 
 
 .chat-message.code  .message-r{
-  background-color:#40414f;
+  background-color:#f7f7f8;
   color:rgba(81 8 66 0);
   overflow-x: auto;
   padding: 20px 10px 10px 0px;
@@ -172,6 +175,7 @@ padding-right: 24px;
 .message-l{
   margin-top:10px;
   align-self: flex-start;
+  color: #636364;
 
 }
 
@@ -182,10 +186,12 @@ padding-right: 24px;
   white-space: pre-wrap;
   padding-top: 20px;
   padding-bottom: 20px;
+  color: #636364;
+
  }
  
  .chat-message.response{
-  background-color: #40414f;
+  background-color: #f7f7f8;
   /* padding: 10px; */
 
  }
@@ -217,10 +223,10 @@ transition: ease 0.25s all;
 }
 
 .chat-input-textarea{
-  background-color:#40414f;
+  background-color:#ffffff;
   width: 70%;
   padding: 12px;
-  color: white;
+  color: rgb(100, 102, 103);
   font-size: 1.2em;
   border-radius: 5px;
   border: none;
@@ -237,6 +243,10 @@ textarea {
 .icons {
   width: 22px;
   height: 22px;
+}
+#usercircle.icons{
+  width: 25px;
+  height: 25px; 
 }
 
 .code {
@@ -259,9 +269,12 @@ button:hover {
   cursor: pointer;
 }
 .fa-paper-plane-svg {
-  fill: none;
-  stroke: rgba(255, 255, 255, 0.342);
+  fill: rgba(255 255 255 0.6);
+  stroke: rgba(255,255,255,0.342);
   stroke-width: 1;
+}
+.avatar{
+  color: rgba(37, 38, 39, 0.626);
 }
 
 

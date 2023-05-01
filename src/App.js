@@ -5,7 +5,7 @@ import "./App.css";
 import "./normal.css";
 import { HiOutlineUserCircle } from "react-icons/hi";
 import { SiOpenai } from "react-icons/si";
-import {BsSendFill} from "react-icons/bs"
+import { BsSendFill } from "react-icons/bs";
 
 // Importing React hooks and OpenAI API
 
@@ -25,6 +25,7 @@ function App() {
   const [question, setQuestion] = useState("");
   const [chatLog, setChatLog] = useState([]);
   const [isCode, setIsCode] = useState(false);
+  const [previous, setPrevious] = useState("");
 
   // Event handler for changing question state
 
@@ -33,10 +34,14 @@ function App() {
   };
 
   // Event handler for pressing enter key to submit the question
-
   const handleEnterKey = async (event) => {
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
+      if (question.trim() === "") {
+        alert("Please enter your query");
+        return;
+      }
+
       try {
         const response = await fetchResponseFromOpenAI(question);
         const newChatLog = [
@@ -62,29 +67,34 @@ function App() {
   };
 
   const handleSubmit = async (event) => {
-    // if (event.key === "Enter" && !event.shiftKey) {
-      event.preventDefault();
-      try {
-        const response = await fetchResponseFromOpenAI(question);
-        const newChatLog = [
-          ...chatLog,
-          { type: "question", text: question },
-          { type: "response", text: response },
-        ];
-        setChatLog(newChatLog);
-        setQuestion("");
-      } catch (error) {
-        console.error(error);
-        const newChatLog = [
-          ...chatLog,
-          { type: "question", text: question },
-          { type: "response", text: "Sorry, kuch to galat hai." },
-        ];
-        setChatLog(newChatLog);
-        setQuestion("");
-      }
+    event.preventDefault();
+
+    if (question.trim() === "") {
+      alert("Please enter your query");
+      return;
+    }
+
+    try {
+      const response = await fetchResponseFromOpenAI(question);
+      const newChatLog = [
+        ...chatLog,
+        { type: "question", text: question },
+        { type: "response", text: response },
+      ];
+      setChatLog(newChatLog);
+      setQuestion("");
+    } catch (error) {
+      console.error(error);
+      const newChatLog = [
+        ...chatLog,
+        { type: "question", text: question },
+        { type: "response", text: "Sorry, kuch to galat hai." },
+      ];
+      setChatLog(newChatLog);
+      setQuestion("");
+    }
     // } else if (event.key === "Enter" && event.shiftKey) {
-      // setQuestion(question + "\n");
+    // setQuestion(question + "\n");
     // }
   };
 
@@ -109,7 +119,7 @@ function App() {
 
       const response = await openai.createCompletion({
         model: "text-davinci-003",
-        prompt: question,
+        prompt: previous ? `${previous}\n${question}` : question,
         temperature: 0.9,
         max_tokens: 500,
         top_p: 1,
@@ -119,7 +129,7 @@ function App() {
       });
 
       let formattedResult = response.data.choices[0].text;
-
+      setPrevious(formattedResult);
       // Format the response as code using Prettier if the model used is Codex
 
       if (response.data.choices[0].model === "davinci-codex") {
@@ -174,7 +184,10 @@ function App() {
                   <div className="chat-message-center">
                     <div className="avatar">
                       {message.type === "question" ? (
-                        <HiOutlineUserCircle className="icons" id="usercircle" />
+                        <HiOutlineUserCircle
+                          className="icons"
+                          id="usercircle"
+                        />
                       ) : (
                         <SiOpenai className="icons" id="MsgFill" />
                       )}
@@ -201,8 +214,13 @@ function App() {
             onChange={handleQuestionChange}
             onKeyDown={handleEnterKey}
           />
-          <button  type="submit" className="submit-btn" onClick={handleSubmit} onChange={handleQuestionChange}>
-            <BsSendFill className="fa-paper-plane-svg" /> 
+          <button
+            type="submit"
+            className="submit-btn"
+            onClick={handleSubmit}
+            onChange={handleQuestionChange}
+          >
+            <BsSendFill className="fa-paper-plane-svg" />
           </button>
         </div>
       </section>
